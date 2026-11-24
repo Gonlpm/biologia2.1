@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tema 2.1 · La Geosfera · 1º ESO</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    h1, h2, h3, h4, .font-display {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    @keyframes vistaEntra {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .vista-activa {
+      animation: vistaEntra 0.25s ease-out;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+  <!-- ==================== BARRA SUPERIOR FIJA DE CATEGORÍAS ==================== -->
+  <header class="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <!-- Fila superior: título del tema y botón de tema claro/oscuro -->
+      <div class="flex items-center justify-between py-2.5 sm:py-3 gap-3 border-b border-slate-100 dark:border-slate-800/80">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-amber-500 via-orange-600 to-red-700 flex items-center justify-center text-white text-lg sm:text-xl font-bold shadow shrink-0">
+            🌍
+          </div>
+          <div class="truncate">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-blue-700 dark:text-blue-400">
+              Biología y Geología · Colegio Agustiniano Madrid
+            </span>
+            <h1 class="text-sm sm:text-lg font-extrabold text-slate-900 dark:text-white truncate">
+              Tema 2.1 · La Geosfera · 1º ESO
+            </h1>
+          </div>
+        </div>
+
+        <button id="theme-btn" type="button" onclick="toggleDarkMode()" aria-label="Cambiar modo claro/oscuro"
+          class="shrink-0 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition flex items-center gap-1.5">
+          <span id="theme-icon">🌙</span>
+          <span class="hidden sm:inline" id="theme-label">Oscuro</span>
+        </button>
+      </div>
+
+      <!-- Barra de categorías independiente (cambia de apartado sin scroll largo) -->
+      <nav aria-label="Categorías principales" class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-2">
+        <button id="cat-btn-apuntes" type="button" onclick="abrirApartado('apuntes')"
+          class="cat-nav-btn shrink-0 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition flex items-center gap-1.5 bg-blue-600 text-white shadow-sm">
+          <span>📖</span>
+          <span>Apuntes completos 2.1</span>
+        </button>
+
+        <button id="cat-btn-repaso" type="button" onclick="abrirApartado('repaso')"
+          class="cat-nav-btn shrink-0 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
+          <span>🧠</span>
+          <span>Repaso visual y esquemas</span>
+        </button>
+
+        <button id="cat-btn-simulacro" type="button" onclick="abrirApartado('simulacro')"
+          class="cat-nav-btn shrink-0 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
+          <span>🎯</span>
+          <span>Simulacro de examen</span>
+        </button>
+
+        <button id="cat-btn-examen" type="button" onclick="abrirApartado('examen')"
+          class="cat-nav-btn shrink-0 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
+          <span>📝</span>
+          <span>Examen HTML</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== CONTENEDOR DE APARTADOS INDEPENDIENTES ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-6">
+
+    <!-- ===================================================================== -->
+    <!-- APARTADO 1: APUNTES COMPLETOS 2.1 (7 PÁGINAS + ILUSTRACIONES)         -->
+    <!-- ===================================================================== -->
+    <section id="vista-apuntes" class="apartado-vista vista-activa space-y-6">
+      <!-- Selector de páginas 1 a 7 o todas -->
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-extrabold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+              BLOQUE I. LAS ESFERAS DE LA TIERRA · TEMA 2.1. LA GEOSFERA. (1.7+1.8+apuntes)
+            </span>
+            <h2 class="text-lg sm:text-2xl font-extrabold text-slate-900 dark:text-white">
+              Apuntes completos 2.1 · 7 Páginas e Ilustraciones
+            </h2>
+          </div>
+
+          <div class="flex flex-wrap gap-1.5" id="selector-paginas">
+            <button type="button" data-pag="todas" onclick="seleccionarPagina('todas')"
+              class="pag-btn px-3 py-1.5 rounded-xl text-xs font-extrabold bg-blue-600 text-white shadow-sm transition">
+              Todas (1-7)
+            </button>
+            <button type="button" data-pag="1" onclick="seleccionarPagina('1')"
+              class="pag-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+              Pág. 1
+            </button>
+            <button type="button" data-pag="2" onclick="seleccionarPagina('2')"
+              class="pag-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+              Pág. 2
+            </button>
+            <button type="button" data-pag="3" onclick="seleccionarPagina('3')"
+              class="pag-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+              Pág. 3
+            </button>
+            <button type="button" data-pag="4" onclick="seleccionarPagina('4')"
+              class="pag-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+              Pág. 4
+            </button>
+            <button type="button" data-pag="5" onclick="seleccionarPagina('5')"
+              class="pag-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+              Pág. 5
+            </button>
+            <button type="button" data-pag="6" onclick="seleccionarPagina('6')"
+              class="pag-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+              Pág. 6
+            </button>
+            <button type="button" data-pag="7" onclick="seleccionarPagina('7')"
+              class="pag-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+              Pág. 7
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ---------------- PÁGINA 1 ---------------- -->
+      <article data-pagina="1" class="pagina-apunte bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="bg-gradient-to-r from-amber-700 via-orange-700 to-red-800 px-6 py-4 text-white flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <div class="text-[11px] font-bold uppercase tracking-widest opacity-90">
+              Colegio Agustiniano Madrid · BIOLOGÍA Y GEOLOGÍA 1º ESO · BLOQUE I. LAS ESFERAS DE LA TIERRA · TEMA 2.1. LA GEOSFERA. (1.7+1.8+apuntes)
+            </div>
+            <h3 class="text-xl sm:text-2xl font-extrabold">1. LAS CAPAS DE LA GEOSFERA</h3>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-white/20 text-xs font-extrabold">Página 1 / 7</span>
+        </div>
+
+        <div class="p-5 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- Recreación fiel del diagrama de la Página 1 -->
+          <div class="lg:col-span-5 bg-slate-100 dark:bg-slate-800/80 rounded-2xl p-4 border border-slate-200 dark:border-slate-700">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 text-center">
+              Ilustración Pág. 1 · Corte de Capas y Profundidades
+            </div>
+            <svg viewBox="0 0 380 460" class="w-full h-auto rounded-xl bg-white dark:bg-slate-900 shadow-inner">
+              <!-- ATMÓSFERA -->
+              <path d="M 45 70 Q 195 15 345 70 L 330 96 Q 195 44 60 96 Z" fill="#dbeafe" stroke="#64748b" stroke-width="1.5"/>
+              <path d="M 95 52 Q 105 42 120 48 Q 135 42 142 54 Z" fill="#ffffff" stroke="#94a3b8"/>
+              <path d="M 245 48 Q 258 38 272 46 Q 286 42 292 54 Z" fill="#ffffff" stroke="#94a3b8"/>
+              <text x="195" y="66" text-anchor="middle" font-size="12" font-weight="800" fill="#1e293b">ATMÓSFERA</text>
+              <text x="35" y="88" font-size="10.5" font-weight="800" fill="#0f172a">640 Km</text>
+
+              <!-- CORTEZA -->
+              <path d="M 60 96 Q 195 44 330 96 L 323 114 Q 195 64 67 114 Z" fill="#a1887f" stroke="#5d4037" stroke-width="1.5"/>
+              <path d="M 110 82 Q 135 72 155 86 Q 140 98 115 95 Z" fill="#84cc16" opacity="0.85"/>
+              <text x="195" y="96" text-anchor="middle" font-size="11.5" font-weight="800" fill="#ffffff">CORTEZA</text>
+              <text x="35" y="114" font-size="10.5" font-weight="800" fill="#0f172a">6-70 Km</text>
+
+              <!-- MANTO -->
+              <path d="M 67 114 Q 195 64 323 114 L 268 245 Q 195 215 122 245 Z" fill="#dc2626" stroke="#7f1d1d" stroke-width="1.5"/>
+              <text x="205" y="172" text-anchor="middle" font-size="15" font-weight="800" fill="#ffffff">MANTO</text>
+              <text x="35" y="148" font-size="9.5" font-weight="700" fill="#0f172a">Roca sólida, derretida</text>
+              <text x="35" y="160" font-size="9.5" font-weight="700" fill="#0f172a">80-150 km más abajo.</text>
+              <text x="35" y="238" font-size="10.5" font-weight="800" fill="#0f172a">2.900 Km</text>
+
+              <!-- NÚCLEO EXTERNO -->
+              <path d="M 122 245 Q 195 215 268 245 L 228 335 Q 195 320 162 335 Z" fill="#f97316" stroke="#9a3412" stroke-width="1.5"/>
+              <text x="292" y="275" font-size="10.5" font-weight="800" fill="#0f172a">NÚCLEO</text>
+              <text x="292" y="288" font-size="10.5" font-weight="800" fill="#0f172a">EXTERNO</text>
+              <text x="292" y="303" font-size="9.5" font-weight="700" fill="#334155">Hierro, níquel</text>
+              <text x="292" y="315" font-size="9.5" font-weight="700" fill="#334155">y oxígeno líquidos.</text>
+              <text x="35" y="330" font-size="10.5" font-weight="800" fill="#0f172a">5.100 Km</text>
+
+              <!-- NÚCLEO INTERNO -->
+              <path d="M 162 335 Q 195 320 228 335 L 195 415 Z" fill="#facc15" stroke="#ca8a04" stroke-width="1.5"/>
+              <text x="285" y="365" font-size="10.5" font-weight="800" fill="#0f172a">NÚCLEO</text>
+              <text x="285" y="378" font-size="10.5" font-weight="800" fill="#0f172a">INTERNO</text>
+              <text x="285" y="394" font-size="9.5" font-weight="700" fill="#334155">Hierro y níquel macizos</text>
+              <text x="285" y="407" font-size="9.5" font-weight="800" fill="#b91c1c">Temperatura 4.500 C°</text>
+
+              <!-- Radio total -->
+              <text x="195" y="438" text-anchor="middle" font-size="11" font-weight="800" fill="#0f172a">6.371 Km</text>
+            </svg>
+          </div>
+
+          <!-- Texto íntegro Página 1 -->
+          <div class="lg:col-span-7 space-y-4 text-sm sm:text-base leading-relaxed text-slate-700 dark:text-slate-300">
+            <p class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 font-medium text-slate-800 dark:text-slate-200">
+              La geosfera está formada por diferentes capas, en orden creciente de densidad, de forma que, cuanto más profunda es una capa, mayor densidad y temperatura presenta.
+            </p>
+
+            <div class="space-y-1.5">
+              <h4 class="font-extrabold text-slate-900 dark:text-white">Corteza.</h4>
+              <p>Es la capa más externa y la de menor espesor. Hay dos tipos:</p>
+              <ul class="list-disc pl-6 space-y-1">
+                <li><strong>Corteza continental:</strong> forma parte de los continentes, las islas y la plataforma continental. Está compuesta por rocas como el granito, la arcilla o la pizarra.</li>
+                <li><strong>Corteza oceánica:</strong> constituye los fondos oceánicos y en ella abundan rocas como el basalto.</li>
+              </ul>
+            </div>
+
+            <div class="space-y-1.5">
+              <h4 class="font-extrabold text-slate-900 dark:text-white">Manto.</h4>
+              <p>Es la capa intermedia, con un espesor de unos 2.900 km. Es más densa que la corteza y su temperatura es más elevada. Debido a ello, en algunas zonas del manto se encuentran rocas fundidas, que forman magma. Está formado principalmente por peridotitas. Consta de dos capas:</p>
+              <ul class="list-disc pl-6 space-y-1">
+                <li><strong>Manto superior:</strong> es sólido, aunque en algunas zonas está parcialmente fundido.</li>
+                <li><strong>Manto inferior:</strong> contiene materiales en estado sólido.</li>
+              </ul>
+            </div>
+
+            <div class="space-y-1.5">
+              <h4 class="font-extrabold text-slate-900 dark:text-white">Núcleo.</h4>
+              <p>Es la capa más interna. Está compuesta de hierro y níquel, que le proporcionan una elevada densidad. Tiene unos 3.500 km de espesor y su temperatura es muy elevada. Tiene dos capas:</p>
+              <ul class="list-disc pl-6 space-y-1">
+                <li><strong>Núcleo externo:</strong> formado por material fundido en continuo movimiento.</li>
+                <li><strong>Núcleo interno:</strong> contiene los materiales más densos. A pesar de las altas temperaturas, estos se encuentran en estado sólido, debido a la fuerte presión a la que están sometidos.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ---------------- PÁGINA 2 ---------------- -->
+      <article data-pagina="2" class="pagina-apunte bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="bg-gradient-to-r from-emerald-700 to-teal-800 px-6 py-4 text-white flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <div class="text-[11px] font-bold uppercase tracking-widest opacity-90">
+              Colegio Agustiniano Madrid · BIOLOGÍA Y GEOLOGÍA 1º ESO · BLOQUE I. LAS ESFERAS DE LA TIERRA · TEMA 2.1. LA GEOSFERA. (1.7+1.8+apuntes)
+            </div>
+            <h3 class="text-xl sm:text-2xl font-extrabold">2. ¿QUÉ ES LA LITOSFERA?</h3>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-white/20 text-xs font-extrabold">Página 2 / 7</span>
+        </div>
+
+        <div class="p-5 sm:p-8 space-y-6 text-sm sm:text-base leading-relaxed text-slate-700 dark:text-slate-300">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <div class="lg:col-span-6 space-y-4">
+              <p>
+                Denominamos <strong>litosfera</strong> al conjunto formado por la corteza terrestre y la parte superior del manto (la constituida por rocas rígidas). Está conformada por rocas sólidas y rígidas. Su grosor es variable (desde 70km bajo los océanos hasta 200km en los continentes)
+              </p>
+              <h4 class="text-lg font-extrabold text-slate-900 dark:text-white">Qué son las placas litosféricas:</h4>
+              <p>
+                La litosfera no forma una capa continua, sino que está fragmentada, es decir, dividida en trozos llamados <strong>placas litosféricas o placas tectónicas</strong>, cuyos límites o bordes de placa están bien definidos.
+              </p>
+              <p>
+                Los bordes de las placas se pueden identificar claramente porque coinciden con relieves muy notables de la litosfera como con las <strong>dorsales</strong> o las <strong>fosas oceánicas</strong> o con las <strong>grandes cordilleras</strong>. En el mapa se pueden observar algunas de estas coincidencias entre los bordes de placa y esos relieves.
+              </p>
+            </div>
+
+            <!-- Diagrama lateral Pág. 2: corteza, Moho, litosfera, astenosfera, manto superior/inferior -->
+            <div class="lg:col-span-6 bg-slate-100 dark:bg-slate-800/80 rounded-2xl p-4 border border-slate-200 dark:border-slate-700">
+              <div class="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 text-center">
+                Esquema Pág. 2 · Corteza, Moho, Astenosfera y Litosfera
+              </div>
+              <svg viewBox="0 0 420 225" class="w-full h-auto rounded-xl bg-white dark:bg-slate-900 p-2">
+                <!-- Corteza -->
+                <rect x="20" y="18" width="230" height="26" fill="#d97706" stroke="#78350f"/>
+                <text x="135" y="35" text-anchor="middle" font-size="11" font-weight="800" fill="#ffffff">corteza</text>
+                <!-- Moho -->
+                <line x1="20" y1="45" x2="250" y2="45" stroke="#ef4444" stroke-width="2" stroke-dasharray="3 2"/>
+                <text x="256" y="48" font-size="10" font-weight="800" fill="#b91c1c">Moho</text>
+                <!-- Astenosfera / manto superior -->
+                <rect x="20" y="47" width="230" height="48" fill="#f97316" stroke="#9a3412"/>
+                <text x="256" y="66" font-size="10" font-weight="800" fill="#c2410c">astenosfera</text>
+                <text x="256" y="83" font-size="10" font-weight="800" fill="#9a3412">manto superior</text>
+                <!-- Manto inferior -->
+                <rect x="20" y="95" width="230" height="65" fill="#dc2626" stroke="#7f1d1d"/>
+                <text x="256" y="130" font-size="10.5" font-weight="800" fill="#991b1b">manto inferior</text>
+
+                <!-- Bloque inferior: LITOSFERA -->
+                <rect x="20" y="172" width="230" height="18" fill="#78350f"/>
+                <rect x="20" y="190" width="230" height="24" fill="#ea580c"/>
+                <text x="135" y="185" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fef3c7">corteza</text>
+                <text x="262" y="196" font-size="12" font-weight="900" fill="#0f172a">LITOSFERA</text>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Mapa mundial de límites entre placas y leyenda (Pág. 2) -->
+          <div class="bg-slate-100 dark:bg-slate-800/80 rounded-2xl p-4 sm:p-5 border border-slate-200 dark:border-slate-700 space-y-3">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-slate-600 dark:text-slate-300 text-center">
+              Ilustración Pág. 2 · Los límites entre las placas litosféricas
+            </div>
+            <svg viewBox="0 0 800 390" class="w-full h-auto rounded-xl bg-sky-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+              <!-- Continentes estilizados -->
+              <path d="M 80 60 L 210 55 L 245 105 L 185 155 L 125 145 L 70 100 Z" fill="#fde68a" stroke="#d97706" stroke-width="1.2"/>
+              <text x="155" y="102" text-anchor="middle" font-size="11" font-weight="800" fill="#78350f">placa norteamericana</text>
+
+              <path d="M 195 180 L 265 185 L 295 245 L 245 315 L 210 295 L 205 225 Z" fill="#fde68a" stroke="#d97706" stroke-width="1.2"/>
+              <text x="242" y="238" text-anchor="middle" font-size="10.5" font-weight="800" fill="#78350f">placa</text>
+              <text x="242" y="250" text-anchor="middle" font-size="10.5" font-weight="800" fill="#78350f">sudamericana</text>
+
+              <path d="M 385 65 L 630 55 L 665 125 L 585 175 L 435 165 L 385 115 Z" fill="#fde68a" stroke="#d97706" stroke-width="1.2"/>
+              <text x="515" y="105" text-anchor="middle" font-size="12" font-weight="800" fill="#78350f">placa euroasiática</text>
+
+              <path d="M 385 165 L 475 165 L 505 235 L 455 290 L 395 255 L 375 200 Z" fill="#fde68a" stroke="#d97706" stroke-width="1.2"/>
+              <text x="435" y="215" text-anchor="middle" font-size="11" font-weight="800" fill="#78350f">placa</text>
+              <text x="435" y="228" text-anchor="middle" font-size="11" font-weight="800" fill="#78350f">africana</text>
+
+              <path d="M 555 215 L 665 210 L 685 275 L 615 295 L 565 265 Z" fill="#fde68a" stroke="#d97706" stroke-width="1.2"/>
+              <text x="620" y="252" text-anchor="middle" font-size="10.5" font-weight="800" fill="#78350f">placa</text>
+              <text x="620" y="264" text-anchor="middle" font-size="10.5" font-weight="800" fill="#78350f">indoaustraliana</text>
+
+              <text x="85" y="195" text-anchor="middle" font-size="11" font-weight="800" fill="#0369a1">placa</text>
+              <text x="85" y="208" text-anchor="middle" font-size="11" font-weight="800" fill="#0369a1">pacífica</text>
+
+              <text x="155" y="230" text-anchor="middle" font-size="10" font-weight="800" fill="#b45309">placa de Nazca</text>
+              <text x="440" y="348" text-anchor="middle" font-size="12" font-weight="800" fill="#334155">placa antártica</text>
+
+              <!-- Bordes constructivos (verde) -->
+              <path d="M 335 45 Q 320 155 345 320" fill="none" stroke="#15803d" stroke-width="3"/>
+              <path d="M 165 180 L 185 295" fill="none" stroke="#15803d" stroke-width="3"/>
+
+              <!-- Bordes destructivos subducción (naranja) -->
+              <path d="M 192 185 Q 175 235 205 295" fill="none" stroke="#ea580c" stroke-width="3"/>
+              <path d="M 65 85 Q 40 185 75 285" fill="none" stroke="#ea580c" stroke-width="3"/>
+              <path d="M 555 170 Q 640 165 680 230" fill="none" stroke="#ea580c" stroke-width="3"/>
+
+              <!-- Bordes colisión continental (morado) -->
+              <path d="M 455 155 Q 515 160 565 172" fill="none" stroke="#7e22ce" stroke-width="3.5"/>
+
+              <!-- Bordes pasivos (amarillo) -->
+              <line x1="95" y1="135" x2="125" y2="155" stroke="#eab308" stroke-width="3"/>
+
+              <!-- Velocidades y flechas de ejemplo -->
+              <g font-size="10" font-weight="800" fill="#0f172a">
+                <text x="348" y="135">2,3 →</text>
+                <text x="352" y="215">2,5 →</text>
+                <text x="145" y="255">10,1 →</text>
+                <text x="495" y="148">↑ 5,4</text>
+                <text x="640" y="195">↓ 10,5</text>
+              </g>
+
+              <!-- Leyenda fiel del mapa -->
+              <rect x="20" y="285" width="215" height="95" rx="8" fill="#ffffff" fill-opacity="0.92" stroke="#64748b"/>
+              <line x1="28" y1="300" x2="48" y2="300" stroke="#15803d" stroke-width="3"/>
+              <text x="54" y="303" font-size="8.5" font-weight="700" fill="#1e293b">bordes constructivos (con transformantes)</text>
+
+              <line x1="28" y1="316" x2="48" y2="316" stroke="#ea580c" stroke-width="3"/>
+              <text x="54" y="319" font-size="8.5" font-weight="700" fill="#1e293b">bordes destructivos (zonas de subducción)</text>
+
+              <line x1="28" y1="332" x2="48" y2="332" stroke="#eab308" stroke-width="3"/>
+              <text x="54" y="335" font-size="8.5" font-weight="700" fill="#1e293b">bordes pasivos</text>
+
+              <line x1="28" y1="348" x2="48" y2="348" stroke="#7e22ce" stroke-width="3"/>
+              <text x="54" y="351" font-size="8.5" font-weight="700" fill="#1e293b">bordes destructivos (colisión continental)</text>
+
+              <text x="28" y="366" font-size="8.5" font-weight="700" fill="#1e293b">3,3 velocidad de desplazamiento en cm/año · → sentido</text>
+            </svg>
+          </div>
+        </div>
+      </article>
+
+      <!-- ---------------- PÁGINA 3 ---------------- -->
+      <article data-pagina="3" class="pagina-apunte bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="bg-gradient-to-r from-cyan-700 to-blue-800 px-6 py-4 text-white flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <div class="text-[11px] font-bold uppercase tracking-widest opacity-90">
+              Colegio Agustiniano Madrid · BIOLOGÍA Y GEOLOGÍA 1º ESO · BLOQUE I. LAS ESFERAS DE LA TIERRA · TEMA 2.1. LA GEOSFERA. (1.7+1.8+apuntes)
+            </div>
+            <h3 class="text-xl sm:text-2xl font-extrabold">Pangea, Océanos (70%), Continentes (30%) y Convección</h3>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-white/20 text-xs font-extrabold">Página 3 / 7</span>
+        </div>
+
+        <div class="p-5 sm:p-8 space-y-6 text-sm sm:text-base leading-relaxed text-slate-700 dark:text-slate-300">
+          <div class="space-y-3">
+            <p>
+              Imagina si ha cambiado la morfología de los continentes que hace <strong>300 millones de años</strong> la distribución de las placas litosféricas era tal que todos los continentes estaban unidos en un supercontinente llamado <strong>Pangea</strong>, que fue fragmentándose por los movimientos tectónicos hasta llegar a la distribución actual.
+            </p>
+            <p>En definitiva, sobre la litosfera encontramos:</p>
+            <ul class="list-disc pl-6 space-y-1.5">
+              <li><strong>Océanos</strong>, que son las masas de agua que cubren la corteza terrestre y ocupan el <strong>70% aprox.</strong> de la superficie de la Tierra.</li>
+              <li><strong>Continentes</strong>, que son las zonas de la corteza terrestre que están por encima del nivel del mar y que representan el <strong>30%</strong> de la superficie de la Tierra.</li>
+            </ul>
+            <p>
+              Pero esta distribución de los continentes no ha sido siempre así, porque como los materiales del manto son fluidos y están a diferentes temperaturas, se generan <strong>corrientes de convección</strong> que hacen que estas placas que «flotan» sobre el manto se muevan, originando, en sus choques y desplazamientos, <strong>erupciones volcánicas y terremotos</strong> que pueden ocasionar modificaciones en las formas de relieve.
+            </p>
+          </div>
+
+          <!-- Recreación de las 4 etapas continentales de la Página 3 -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Hace 250 millones de años -->
+            <div class="bg-slate-100 dark:bg-slate-800 rounded-2xl p-3 border border-slate-200 dark:border-slate-700 text-center">
+              <div class="text-xs font-extrabold text-amber-800 dark:text-amber-300 mb-2">HACE 250 MILLONES DE AÑOS</div>
+              <svg viewBox="0 0 180 180" class="w-full h-auto rounded-xl bg-sky-100 dark:bg-slate-900">
+                <ellipse cx="90" cy="90" rx="75" ry="82" fill="#e2e8f0" stroke="#94a3b8"/>
+                <path d="M 65 35 L 125 40 L 135 85 L 115 145 L 65 140 L 48 90 Z" fill="#84cc16" stroke="#4d7c0f"/>
+                <text x="90" y="62" text-anchor="middle" font-size="9" font-weight="800" fill="#1e293b">LAURASIA</text>
+                <text x="90" y="92" text-anchor="middle" font-size="11" font-weight="900" fill="#ffffff">PANGEA</text>
+                <text x="90" y="124" text-anchor="middle" font-size="9" font-weight="800" fill="#1e293b">GONDWANA</text>
+              </svg>
+            </div>
+
+            <!-- Hace 135 millones de años -->
+            <div class="bg-slate-100 dark:bg-slate-800 rounded-2xl p-3 border border-slate-200 dark:border-slate-700 text-center">
+              <div class="text-xs font-extrabold text-emerald-800 dark:text-emerald-300 mb-2">HACE 135 MILLONES DE AÑOS</div>
+              <svg viewBox="0 0 180 180" class="w-full h-auto rounded-xl bg-sky-100 dark:bg-slate-900">
+                <ellipse cx="90" cy="90" rx="75" ry="82" fill="#e2e8f0" stroke="#94a3b8"/>
+                <path d="M 48 45 L 120 42 L 112 82 L 52 80 Z" fill="#84cc16" stroke="#4d7c0f"/>
+                <text x="84" y="65" text-anchor="middle" font-size="8.5" font-weight="800" fill="#1e293b">LAURASIA</text>
+                <path d="M 62 98 L 138 102 L 130 148 L 68 145 Z" fill="#a3e635" stroke="#4d7c0f"/>
+                <text x="98" y="124" text-anchor="middle" font-size="8.5" font-weight="800" fill="#1e293b">GONDWANA</text>
+              </svg>
+            </div>
+
+            <!-- Nuestros tiempos -->
+            <div class="bg-slate-100 dark:bg-slate-800 rounded-2xl p-3 border border-slate-200 dark:border-slate-700 text-center">
+              <div class="text-xs font-extrabold text-blue-800 dark:text-blue-300 mb-2">NUESTROS TIEMPOS</div>
+              <svg viewBox="0 0 180 180" class="w-full h-auto rounded-xl bg-sky-100 dark:bg-slate-900">
+                <ellipse cx="90" cy="90" rx="75" ry="82" fill="#e2e8f0" stroke="#94a3b8"/>
+                <polygon points="32,45 62,45 55,85 38,82" fill="#84cc16"/>
+                <text x="46" y="66" text-anchor="middle" font-size="6.5" font-weight="800" fill="#1e293b">AM. NORTE</text>
+                <polygon points="48,92 72,95 62,135 45,125" fill="#84cc16"/>
+                <text x="58" y="114" text-anchor="middle" font-size="6.5" font-weight="800" fill="#1e293b">AM. SUR</text>
+                <polygon points="82,42 145,42 138,85 85,82" fill="#84cc16"/>
+                <text x="112" y="64" text-anchor="middle" font-size="7" font-weight="800" fill="#1e293b">EUROPA / ASIA</text>
+                <polygon points="85,88 112,88 106,125 84,118" fill="#84cc16"/>
+                <text x="96" y="108" text-anchor="middle" font-size="7" font-weight="800" fill="#1e293b">ÁFRICA</text>
+                <polygon points="122,115 145,118 140,138 120,135" fill="#84cc16"/>
+                <text x="132" y="130" text-anchor="middle" font-size="6.5" font-weight="800" fill="#1e293b">AUSTRALIA</text>
+                <rect x="45" y="152" width="90" height="12" rx="4" fill="#cbd5e1"/>
+                <text x="90" y="161" text-anchor="middle" font-size="7" font-weight="800" fill="#1e293b">ANTÁRTIDA</text>
+              </svg>
+            </div>
+
+            <!-- Dentro de 150 millones de años -->
+            <div class="bg-slate-100 dark:bg-slate-800 rounded-2xl p-3 border border-slate-200 dark:border-slate-700 text-center">
+              <div class="text-xs font-extrabold text-purple-800 dark:text-purple-300 mb-2">DENTRO DE 150 MILLONES DE AÑOS</div>
+              <svg viewBox="0 0 180 180" class="w-full h-auto rounded-xl bg-sky-100 dark:bg-slate-900">
+                <ellipse cx="90" cy="90" rx="75" ry="82" fill="#e2e8f0" stroke="#94a3b8"/>
+                <path d="M 55 48 L 132 52 L 125 128 L 62 125 Z" fill="#a3e635" stroke="#4d7c0f"/>
+                <text x="93" y="88" text-anchor="middle" font-size="8.5" font-weight="800" fill="#1e293b">NUEVO</text>
+                <text x="93" y="100" text-anchor="middle" font-size="8.5" font-weight="800" fill="#1e293b">SUPERCONTINENTE</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ---------------- PÁGINA 4 ---------------- -->
+      <article data-pagina="4" class="pagina-apunte bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="bg-gradient-to-r from-indigo-700 to-purple-800 px-6 py-4 text-white flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <div class="text-[11px] font-bold uppercase tracking-widest opacity-90">
+              Colegio Agustiniano Madrid · BIOLOGÍA Y GEOLOGÍA 1º ESO · BLOQUE I. LAS ESFERAS DE LA TIERRA · TEMA 2.1. LA GEOSFERA. (1.7+1.8+apuntes)
+            </div>
+            <h3 class="text-xl sm:text-2xl font-extrabold">3. LA FORMACIÓN DEL RELIEVE TERRESTRE</h3>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-white/20 text-xs font-extrabold">Página 4 / 7</span>
+        </div>
+
+        <div class="p-5 sm:p-8 space-y-6 text-sm sm:text-base leading-relaxed text-slate-700 dark:text-slate-300">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <div class="lg:col-span-6 space-y-4">
+              <p>
+                La superficie de la Tierra no es completamente llana. Tiene zonas altas, zonas bajas, formas redondeadas y costas recortadas. Llamamos <strong>relieve</strong> al conjunto de formas e irregularidades que encontramos en la superficie de la Tierra (tanto en los continentes como en el fondo de los océanos).
+              </p>
+              <p>El relieve cambia continuamente (aunque muy despacio) debido a dos tipos de fuerzas:</p>
+              <ul class="list-disc pl-6 space-y-1.5">
+                <li><strong>Agentes internos:</strong> Fuerzas que vienen del interior de la Tierra y «construyen» el relieve (como los volcanes o los terremotos).</li>
+                <li><strong>Agentes externos:</strong> Fuerzas que actúan desde el exterior y «esculpen» o desgastan las formas existentes (como el agua, el viento o los seres humanos).</li>
+              </ul>
+              <h4 class="text-lg font-extrabold text-slate-900 dark:text-white pt-2">3.1. Agentes internos: los constructores del relieve</h4>
+              <p>
+                Las fuerzas del interior de la Tierra afectan a la corteza porque el magma caliente provoca que las placas tectónicas se muevan lentamente y choquen entre sí. Cuando esta presión se mantiene durante millones de años, se forman las montañas. A este proceso lo llamamos <strong>orogenia</strong>.
+              </p>
+            </div>
+
+            <!-- Esquema de ramas Agentes internos vs externos (Pág. 4) -->
+            <div class="lg:col-span-6 bg-slate-100 dark:bg-slate-800/80 rounded-2xl p-4 border border-slate-200 dark:border-slate-700">
+              <div class="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 text-center">
+                Esquema Pág. 4 · Modificación del Relieve Terrestre
+              </div>
+              <svg viewBox="0 0 440 250" class="w-full h-auto rounded-xl bg-white dark:bg-slate-900 p-2">
+                <!-- Nodo central -->
+                <rect x="10" y="95" width="125" height="60" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                <text x="72" y="118" text-anchor="middle" font-size="9.5" font-weight="800" fill="#78350f">La modificación</text>
+                <text x="72" y="131" text-anchor="middle" font-size="9.5" font-weight="800" fill="#78350f">del relieve terrestre</text>
+                <text x="72" y="144" text-anchor="middle" font-size="9.5" font-weight="800" fill="#78350f">se debe a:</text>
+
+                <!-- Rama superior: Agentes internos -->
+                <path d="M 135 110 L 165 55 L 180 55" fill="none" stroke="#dc2626" stroke-width="2"/>
+                <rect x="180" y="38" width="105" height="34" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+                <text x="232" y="59" text-anchor="middle" font-size="10" font-weight="800" fill="#991b1b">Agentes internos</text>
+
+                <!-- Hijos internos -->
+                <line x1="285" y1="55" x2="310" y2="55" stroke="#dc2626" stroke-width="1.5"/>
+                <line x1="310" y1="18" x2="310" y2="95" stroke="#dc2626" stroke-width="1.5"/>
+                <g font-size="9.5" font-weight="800" fill="#1e293b">
+                  <line x1="310" y1="18" x2="325" y2="18" stroke="#dc2626"/><text x="330" y="21">Fallas</text>
+                  <line x1="310" y1="43" x2="325" y2="43" stroke="#dc2626"/><text x="330" y="46">Plegamientos</text>
+                  <line x1="310" y1="68" x2="325" y2="68" stroke="#dc2626"/><text x="330" y="71">Volcanes</text>
+                  <line x1="310" y1="93" x2="325" y2="93" stroke="#dc2626"/><text x="330" y="96">Terremotos</text>
+                </g>
+
+                <!-- Rama inferior: Agentes externos -->
+                <path d="M 135 140 L 165 185 L 180 185" fill="none" stroke="#0284c7" stroke-width="2"/>
+                <rect x="180" y="168" width="105" height="34" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+                <text x="232" y="189" text-anchor="middle" font-size="10" font-weight="800" fill="#075985">Agentes externos</text>
+
+                <!-- Hijos externos -->
+                <line x1="285" y1="185" x2="310" y2="185" stroke="#0284c7" stroke-width="1.5"/>
+                <line x1="310" y1="125" x2="310" y2="238" stroke="#0284c7" stroke-width="1.5"/>
+                <g font-size="9.5" font-weight="800" fill="#1e293b">
+                  <line x1="310" y1="125" x2="325" y2="125" stroke="#0284c7"/><text x="330" y="128">Agua</text>
+                  <line x1="310" y1="153" x2="325" y2="153" stroke="#0284c7"/><text x="330" y="156">Viento</text>
+                  <line x1="310" y1="181" x2="325" y2="181" stroke="#0284c7"/><text x="330" y="184">Vegetación</text>
+                  <line x1="310" y1="210" x2="325" y2="210" stroke="#0284c7"/><text x="330" y="213">Acción</text>
+                  <text x="330" y="224">humana</text>
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ---------------- PÁGINA 5 ---------------- -->
+      <article data-pagina="5" class="pagina-apunte bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="bg-gradient-to-r from-rose-700 to-orange-700 px-6 py-4 text-white flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <div class="text-[11px] font-bold uppercase tracking-widest opacity-90">
+              Colegio Agustiniano Madrid · BIOLOGÍA Y GEOLOGÍA 1º ESO · BLOQUE I. LAS ESFERAS DE LA TIERRA · TEMA 2.1. LA GEOSFERA. (1.7+1.8+apuntes)
+            </div>
+            <h3 class="text-xl sm:text-2xl font-extrabold">Plegamientos, Fallas, Terremotos y Volcanes</h3>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-white/20 text-xs font-extrabold">Página 5 / 7</span>
+        </div>
+
+        <div class="p-5 sm:p-8 space-y-6 text-sm sm:text-base leading-relaxed text-slate-700 dark:text-slate-300">
+          <!-- Tres ilustraciones de la Página 5: Plegamiento, Bloque-Falla y Volcán -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- 1. Plegamientos -->
+            <div class="bg-slate-100 dark:bg-slate-800/80 rounded-2xl p-3 border border-slate-200 dark:border-slate-700">
+              <div class="text-xs font-extrabold text-amber-800 dark:text-amber-300 mb-1.5 text-center">Plegamiento (Rocas blandas)</div>
+              <svg viewBox="0 0 220 140" class="w-full h-auto rounded-xl bg-sky-200 dark:bg-slate-900">
+                <path d="M 0 65 Q 35 15 70 65 T 140 65 T 220 65 L 220 140 L 0 140 Z" fill="#d97706"/>
+                <path d="M 0 78 Q 35 28 70 78 T 140 78 T 220 78" fill="none" stroke="#fef3c7" stroke-width="4"/>
+                <path d="M 0 92 Q 35 42 70 92 T 140 92 T 220 92" fill="none" stroke="#92400e" stroke-width="4"/>
+                <path d="M 0 106 Q 35 56 70 106 T 140 106 T 220 106" fill="none" stroke="#fde68a" stroke-width="3.5"/>
+              </svg>
+            </div>
+
+            <!-- 2. Bloque-Falla con Hipocentro, Epicentro y Ondas Sísmicas -->
+            <div class="bg-slate-100 dark:bg-slate-800/80 rounded-2xl p-3 border border-slate-200 dark:border-slate-700">
+              <div class="text-xs font-extrabold text-amber-800 dark:text-amber-300 mb-1.5 text-center">Falla, Hipocentro y Epicentro</div>
+              <svg viewBox="0 0 220 140" class="w-full h-auto rounded-xl bg-sky-100 dark:bg-slate-900">
+                <polygon points="15,40 110,20 205,40 110,60" fill="#84cc16"/>
+                <polygon points="15,40 110,60 110,132 15,112" fill="#78350f"/>
+                <polygon points="110,60 205,40 205,112 110,132" fill="#92400e"/>
+                <line x1="75" y1="32" x2="155" y2="120" stroke="#fef08a" stroke-width="2"/>
+                <circle cx="115" cy="88" r="14" fill="none" stroke="#fed7aa" stroke-width="1.2"/>
+                <circle cx="115" cy="88" r="26" fill="none" stroke="#fed7aa" stroke-width="1.2"/>
+                <circle cx="115" cy="88" r="4" fill="#ef4444"/>
+                <circle cx="115" cy="40" r="4" fill="#ef4444"/>
+                <text x="115" y="18" text-anchor="middle" font-size="8.5" font-weight="800" fill="#1e293b">Epicentro</text>
+                <text x="148" y="82" font-size="8.5" font-weight="800" fill="#fef08a">Hipocentro</text>
+                <text x="172" y="108" font-size="8.5" font-weight="800" fill="#fed7aa">Falla</text>
+                <text x="155" y="128" font-size="8" font-weight="800" fill="#fde68a">Ondas Sísmicas</text>
+              </svg>
+            </div>
+
+            <!-- 3. Corte de Volcán -->
+            <div class="bg-slate-100 dark:bg-slate-800/80 rounded-2xl p-3 border border-slate-200 dark:border-slate-700">
+              <div class="text-xs font-extrabold text-rose-800 dark:text-rose-300 mb-1.5 text-center">Estructura de un Volcán</div>
+              <svg viewBox="0 0 220 140" class="w-full h-auto rounded-xl bg-sky-100 dark:bg-slate-900">
+                <rect x="0" y="92" width="220" height="24" fill="#92400e"/>
+                <rect x="0" y="116" width="220" height="24" fill="#dc2626"/>
+                <polygon points="45,92 100,32 120,32 175,92" fill="#57534e"/>
+                <rect x="106" y="30" width="8" height="88" fill="#f97316"/>
+                <ellipse cx="110" cy="124" rx="45" ry="12" fill="#f97316"/>
+                <line x1="112" y1="68" x2="142" y2="56" stroke="#f97316" stroke-width="3.5"/>
+                <polygon points="135,62 142,50 150,65" fill="#44403c"/>
+                <circle cx="110" cy="24" r="7" fill="#facc15"/>
+                <text x="110" y="12" text-anchor="middle" font-size="8" font-weight="800" fill="#1e293b">CRÁTER · LAVA/MAGMA</text>
+                <text x="58" y="68" font-size="7.5" font-weight="800" fill="#ffffff">CONO</text>
+                <text x="122" y="85" font-size="7.5" font-weight="800" fill="#fef08a">CHIMENEA</text>
+                <text x="148" y="45" font-size="7" font-weight="800" fill="#1e293b">CONO SEC.</text>
+                <text x="110" y="127" text-anchor="middle" font-size="7.5" font-weight="800" fill="#ffffff">CÁMARA MAGMÁTICA</text>
+              </svg>
+            </div>
+          </div>
+
+          <p>
+            Dependiendo de si las rocas que se presionan son duras o blandas, el choque de las placas produce dos tipos de relieve:
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1.5">
+              <h4 class="font-extrabold text-slate-900 dark:text-white">A) Plegamientos (Relieve ondulado)</h4>
+              <p class="text-sm">
+                Ocurren cuando las fuerzas de la Tierra empujan rocas blandas (como la arcilla o la caliza). Al ser elásticas, las rocas no se rompen, sino que se ondulan formando pliegues.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1.5">
+              <h4 class="font-extrabold text-slate-900 dark:text-white">B) Fallas (Relieve fracturado)</h4>
+              <p class="text-sm">
+                Ocurren cuando las fuerzas de la Tierra empujan rocas duras (como el granito). Al ser rígidas, las rocas no se pueden doblar y se rompen. El terreno se fractura en bloques: unos se elevan y otros se hunden, creando desniveles violentos.
+              </p>
+            </div>
+          </div>
+
+          <p>El movimiento de las placas tectónicas también provoca otros dos fenómenos:</p>
+
+          <div class="space-y-4">
+            <div class="p-4 rounded-2xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/60 space-y-2">
+              <h4 class="font-extrabold text-slate-900 dark:text-white">Los terremotos (o seísmos):</h4>
+              <p class="text-sm">
+                Son temblores bruscos de la corteza terrestre provocados por el choque de las placas. La vibración se transmite en todas direcciones mediante <strong>ondas sísmicas</strong>.
+              </p>
+              <ul class="list-disc pl-6 space-y-1 text-sm">
+                <li><strong>Hipocentro:</strong> Es el punto del interior de la Tierra donde se origina el terremoto.</li>
+                <li><strong>Epicentro:</strong> Es el punto de la superficie situado justo encima del hipocentro. Aquí es donde el temblor se siente con más fuerza.</li>
+                <li>Si el epicentro está en el fondo del mar, se produce un <strong>maremoto</strong>, que puede generar olas gigantescas llamadas <strong>tsunamis</strong>.</li>
+              </ul>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-800/60 space-y-2">
+              <h4 class="font-extrabold text-slate-900 dark:text-white">Los volcanes:</h4>
+              <p class="text-sm">
+                Son grietas o aberturas en la corteza terrestre por las que se expulsa al exterior el magma (roca fundida), gases y cenizas del interior de la Tierra. El magma sube por un tubo llamado <strong>chimenea</strong> y sale al exterior por el <strong>cráter</strong>. Cuando los gases, las piedras y la lava se acumulan alrededor del cráter, forman una montaña llamada <strong>cono volcánico</strong>.
+              </p>
+              <p class="text-sm">
+                Los volcanes pueden estar en tres estados: <strong>activos</strong> (tienen erupciones), <strong>en reposo</strong> (están dormidos, pero pueden despertar) o <strong>extinguidos</strong> (ya no tienen actividad). Las <strong>islas Canarias</strong> en España o el <strong>monte Kilimanjaro</strong> en África son relieves de origen volcánico.
+              </p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ---------------- PÁGINA 6 ---------------- -->
+      <article data-pagina="6" class="pagina-apunte bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="bg-gradient-to-r from-sky-700 to-cyan-800 px-6 py-4 text-white flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <div class="text-[11px] font-bold uppercase tracking-widest opacity-90">
+              Colegio Agustiniano Madrid · BIOLOGÍA Y GEOLOGÍA 1º ESO · BLOQUE I. LAS ESFERAS DE LA TIERRA · TEMA 2.1. LA GEOSFERA. (1.7+1.8+apuntes)
+            </div>
+            <h3 class="text-xl sm:text-2xl font-extrabold">3.2. Agentes externos: escultores del relieve</h3>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-white/20 text-xs font-extrabold">Página 6 / 7</span>
+        </div>
+
+        <div class="p-5 sm:p-8 space-y-5 text-sm sm:text-base leading-relaxed text-slate-700 dark:text-slate-300">
+          <p>
+            Una vez que los agentes internos crean una montaña o un valle, los agentes externos empiezan a desgastarlos y cambiar su forma. Este proceso de transformación se llama <strong>erosión</strong> y ocurre siempre en tres pasos:
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60">
+              <div class="text-xs font-extrabold text-amber-800 dark:text-amber-300">1. Meteorización</div>
+              <p class="text-sm mt-1">Los agentes rompen o desmenuzan las rocas en trozos más pequeños.</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-sky-50 dark:bg-sky-950/30 border border-sky-200 dark:border-sky-800/60">
+              <div class="text-xs font-extrabold text-sky-800 dark:text-sky-300">2. Transporte</div>
+              <p class="text-sm mt-1">Los agentes erosivos como el agua o el viento se llevan esos trozos lejos.</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60">
+              <div class="text-xs font-extrabold text-emerald-800 dark:text-emerald-300">3. Sedimentación</div>
+              <p class="text-sm mt-1">Los trozos transportados se acumulan y se depositan en zonas bajas (como los valles o el fondo del mar).</p>
+            </div>
+          </div>
+
+          <h4 class="font-extrabold text-slate-900 dark:text-white text-base sm:text-lg">Los principales agentes externos son:</h4>
+
+          <div class="space-y-3">
+            <div class="p-4 rounded-2xl bg-sky-50/70 dark:bg-sky-950/20 border border-sky-200 dark:border-sky-800/60 space-y-1.5">
+              <h5 class="font-extrabold text-slate-900 dark:text-white">El agua:</h5>
+              <p class="text-sm">Es el agente que más cambia el paisaje. Actúa de muchas formas:</p>
+              <ul class="list-disc pl-6 space-y-1 text-sm">
+                <li><strong>Lluvia:</strong> Desgasta el suelo y arranca pequeños fragmentos de roca al caer.</li>
+                <li><strong>Ríos:</strong> En las zonas altas (montañas), el agua baja con mucha fuerza y excava <strong>desfiladeros profundos</strong>. En las zonas bajas, avanza más despacio creando curvas llamadas <strong>meandros</strong> y valles amplios.</li>
+                <li><strong>El mar:</strong> Las olas chocan contra la costa desgastando las rocas y creando <strong>cabos o golfos</strong>, y acumulan arena formando <strong>playas</strong>.</li>
+                <li><strong>Aguas subterráneas:</strong> El agua que se filtra bajo el suelo disuelve algunas rocas y crea paisajes peculiares como galerías subterráneas con <strong>estalactitas</strong> y <strong>estalagmitas</strong>.</li>
+              </ul>
+            </div>
+
+            <p class="text-sm">
+              <strong>El hielo (glaciares):</strong> Son ríos de hielo que bajan lentamente por las montañas, limando el terreno y dejándolo liso y sin vegetación.
+            </p>
+            <p class="text-sm">
+              <strong>El viento:</strong> Desgasta las rocas al lanzar contra ellas pequeñas partículas de arena que transporta en suspensión. En los desiertos, el viento acumula esa arena formando <strong>dunas</strong>.
+            </p>
+            <p class="text-sm">
+              <strong>La vegetación:</strong> Las plantas tienen un doble papel. Por un lado, las raíces de los árboles pueden romper las rocas al crecer. Por otro lado, las plantas protegen el suelo de la lluvia y evitan que la tierra se desprenda por las laderas.
+            </p>
+            <p class="text-sm">
+              <strong>El ser humano:</strong> Es el agente que modifica el relieve de forma más rápida y radical a través de la tecnología: talando bosques, construyendo ciudades, autopistas, canteras o minas. El resto de los seres vivos también pueden modificar el relieve, pero su acción es más local y de poca intensidad, comparada con la del ser humano.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <!-- ---------------- PÁGINA 7 ---------------- -->
+      <article data-pagina="7" class="pagina-apunte bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="bg-gradient-to-r from-teal-700 to-emerald-800 px-6 py-4 text-white flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <div class="text-[11px] font-bold uppercase tracking-widest opacity-90">
+              Colegio Agustiniano Madrid · BIOLOGÍA Y GEOLOGÍA 1º ESO · BLOQUE I. LAS ESFERAS DE LA TIERRA · TEMA 2.1. LA GEOSFERA. (1.7+1.8+apuntes)
+            </div>
+            <h3 class="text-xl sm:text-2xl font-extrabold">4. LAS FORMAS DEL RELIEVE TERRESTRE</h3>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-white/20 text-xs font-extrabold">Página 7 / 7</span>
+        </div>
+
+        <div class="p-5 sm:p-8 space-y-6 text-sm sm:text-base leading-relaxed text-slate-700 dark:text-slate-300">
+          <p>
+            La corteza terrestre está sometida como hemos visto a la acción de los agentes internos y externos, modificando el relieve y generando diferentes unidades del relieve como estas.
+          </p>
+
+          <!-- Recreación del bloque tridimensional de la Página 7 -->
+          <div class="bg-slate-100 dark:bg-slate-800/80 rounded-2xl p-4 border border-slate-200 dark:border-slate-700">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 text-center">
+              Ilustración Pág. 7 · Bloque del Relieve Continental, Costero y Submarino
+            </div>
+            <svg viewBox="0 0 820 310" class="w-full h-auto rounded-xl bg-sky-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+              <!-- Mar -->
+              <polygon points="280,120 790,120 790,235 280,235" fill="#0284c7" opacity="0.72"/>
+
+              <!-- Cordillera y montañas -->
+              <polygon points="35,140 95,45 155,135 210,55 270,130 35,140" fill="#cbd5e1" stroke="#475569"/>
+              <polygon points="55,140 95,75 135,135 170,85 225,130 55,140" fill="#65a30d"/>
+              <text x="145" y="42" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">Montaña · Cordillera</text>
+
+              <!-- Altiplano / Meseta y Depresión -->
+              <polygon points="150,125 235,125 255,145 140,145" fill="#84cc16"/>
+              <text x="195" y="120" text-anchor="middle" font-size="8.5" font-weight="800" fill="#1e293b">Altiplano o meseta</text>
+
+              <ellipse cx="115" cy="148" rx="34" ry="12" fill="#4d7c0f"/>
+              <text x="115" y="168" text-anchor="middle" font-size="8.5" font-weight="800" fill="#1e293b">Depresión o cuenca</text>
+
+              <!-- Llanura y río -->
+              <polygon points="150,145 330,145 310,185 130,185" fill="#a3e635"/>
+              <path d="M 185 135 Q 210 155 190 175 Q 230 190 315 165" fill="none" stroke="#2563eb" stroke-width="3.5"/>
+              <text x="245" y="162" text-anchor="middle" font-size="9" font-weight="800" fill="#1e293b">Llanura · Valle</text>
+
+              <!-- Costa: Península, Cabo, Golfo, Isla -->
+              <path d="M 285 130 Q 355 125 385 155 Q 345 175 295 168 Z" fill="#84cc16" stroke="#3f6212"/>
+              <text x="342" y="150" text-anchor="middle" font-size="8.5" font-weight="800" fill="#0f172a">Península</text>
+              <text x="392" y="162" font-size="8.5" font-weight="800" fill="#0f172a">Cabo</text>
+              <text x="320" y="185" font-size="8.5" font-weight="800" fill="#ffffff">Golfo · Ría</text>
+
+              <ellipse cx="445" cy="158" rx="14" ry="7" fill="#84cc16" stroke="#3f6212"/>
+              <ellipse cx="472" cy="166" rx="10" ry="5" fill="#84cc16" stroke="#3f6212"/>
+              <text x="458" y="146" text-anchor="middle" font-size="8.5" font-weight="800" fill="#0f172a">Isla / Archipiélago</text>
+
+              <!-- Fondo marino: Plataforma, Talud, Llanura abisal, Dorsal, Fosa -->
+              <polygon points="310,185 790,185 790,295 310,295" fill="#78350f"/>
+              <path d="M 310 185 L 430 188 L 490 238 L 620 238 L 655 208 L 690 238 L 745 238 L 765 282 L 785 238 L 790 238 L 790 295 L 310 295 Z" fill="#92400e"/>
+
+              <text x="375" y="203" text-anchor="middle" font-size="8.5" font-weight="800" fill="#fef3c7">Plataforma continental</text>
+              <text x="465" y="222" text-anchor="middle" font-size="8.5" font-weight="800" fill="#fef3c7">Talud continental</text>
+              <text x="555" y="252" text-anchor="middle" font-size="9" font-weight="800" fill="#fde68a">Llanura abisal</text>
+              <text x="655" y="200" text-anchor="middle" font-size="8.5" font-weight="800" fill="#ffffff">Dorsal oceánica</text>
+              <text x="765" y="294" text-anchor="middle" font-size="8.5" font-weight="800" fill="#fca5a5">Fosa marina</text>
+            </svg>
+          </div>
+
+          <!-- Definiciones completas de todas las formas del relieve de la Página 7 -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs sm:text-sm">
+            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <strong class="text-slate-900 dark:text-white">Valle:</strong> Es una forma de depresión del relieve que acostumbra a tener una configuración alargada. Puede ser un <strong>valle fluvial</strong> (cuando ha sido creado por la acción de un río y tiene por ello forma de <strong>V</strong>), o un <strong>valle glaciar</strong> (abierto por un glaciar; el fondo del valle tiene entonces una hechura redondeada en <strong>U</strong>).
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <strong class="text-slate-900 dark:text-white">Montaña:</strong> Elevación natural de terreno. La <strong>cordillera</strong> es un continuo encadenado de montañas.
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <strong class="text-slate-900 dark:text-white">Depresión o cuenca:</strong> Es una zona más o menos extensa que se caracteriza por estar a una altitud inferior a las formaciones de relieve que la rodean. A veces, la formación de una depresión o cuenca es el resultado de la acción erosiva de un río y sus afluentes; otras veces puede ser la consecuencia del hundimiento de alguna falla (<strong>fosa tectónica</strong>).
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <strong class="text-slate-900 dark:text-white">Dorsal oceánica:</strong> Cordillera submarina de gran extensión.
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <strong class="text-slate-900 dark:text-white">Cabo:</strong> Parte de la costa que penetra en el mar más que el resto del litoral.
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <strong class="text-slate-900 dark:text-white">Ría:</strong> Forma de penetración marina en tierra. Normalmente alargada, ya que se trata de una lengua de mar ocupando el último tramo de un valle fluvial. Cuando el brazo de mar ocupa un valle glaciar, forma un <strong>fiorde</strong>.
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <strong class="text-slate-900 dark:text-white">Península:</strong> Trozo de tierra rodeada de agua por todas partes menos por una. La península está unida al resto del territorio por un sector más o menos estrecho llamado <strong>istmo</strong>.
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <strong class="text-slate-900 dark:text-white">Llanura abisal:</strong> Extensión de terreno llano en la zona más profunda de los mares y océanos entre <strong>3000 y 7000 metros</strong> de profundidad.
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <strong class="text-slate-900 dark:text-white">Llanura:</strong> Superficie plana o muy poco ondulada de considerables dimensiones.
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <strong class="text-slate-900 dark:text-white">Fosa marina:</strong> Gran depresión de los fondos oceánicos o marítimos que a menudo llegan a los <strong>6000 m</strong> de profundidad y, en ocasiones, hasta los <strong>11000 m</strong>.
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <strong class="text-slate-900 dark:text-white">Isla:</strong> Porción de tierra completamente rodeada por agua. Un conjunto de islas más o menos próximas y relacionadas entre sí forman un <strong>archipiélago</strong>.
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <strong class="text-slate-900 dark:text-white">Talud continental:</strong> Gran escalón que une la plataforma continental con la llanura abisal.
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <strong class="text-slate-900 dark:text-white">Plataforma continental:</strong> Zona marítima que desciende suavemente hasta los <strong>400 m</strong>. Su amplitud hasta la costa puede oscilar entre escasos metros y algunos kilómetros. Es la continuación submarina de los continentes.
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <strong class="text-slate-900 dark:text-white">Altiplano o meseta:</strong> Elevación de terreno que se caracteriza por una superficie más o menos plana situada a cierta altitud respecto al nivel del mar.
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <strong class="text-slate-900 dark:text-white">Golfo:</strong> Es una entrada de mar, habitualmente de forma redondeada. La <strong>bahía</strong> es similar al golfo pero de menores dimensiones.
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- APARTADO 2: REPASO VISUAL Y ESQUEMAS (ESQUEMAS + FLASHCARDS)          -->
+    <!-- ===================================================================== -->
+    <section id="vista-repaso" class="apartado-vista vista-activa hidden space-y-8">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">
+          🧠 Repaso visual y esquemas · Tema 2.1
+        </h2>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+          Esquemas resumidos y tarjetas interactivas (flashcards) para fijar los conceptos clave antes del examen.
+        </p>
+      </div>
+
+      <!-- Esquemas visuales de los 4 bloques -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border-l-4 border-amber-600 shadow-sm space-y-2">
+          <h3 class="font-extrabold text-base sm:text-lg text-amber-800 dark:text-amber-400">Esquema 1 · Capas de la Geosfera</h3>
+          <p class="text-xs font-bold text-slate-500 dark:text-slate-400">↑ Más profundidad = ↑ Densidad y ↑ Temperatura</p>
+          <ul class="text-xs sm:text-sm space-y-1.5 list-disc pl-5 text-slate-700 dark:text-slate-300">
+            <li><strong>Corteza (6-70 km):</strong> Continental (granito, arcilla, pizarra) y Oceánica (basalto).</li>
+            <li><strong>Manto (~2.900 km):</strong> Peridotitas; zonas con magma. Superior (sólido/parcialmente fundido) e Inferior (sólido).</li>
+            <li><strong>Núcleo (~3.500 km, hasta 6.371 km):</strong> Hierro y níquel. Externo (5.100 km, líquido) e Interno (sólido a 4.500 °C por presión).</li>
+          </ul>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border-l-4 border-emerald-600 shadow-sm space-y-2">
+          <h3 class="font-extrabold text-base sm:text-lg text-emerald-800 dark:text-emerald-400">Esquema 2 · Litosfera, Placas y Pangea</h3>
+          <ul class="text-xs sm:text-sm space-y-1.5 list-disc pl-5 text-slate-700 dark:text-slate-300">
+            <li><strong>Litosfera:</strong> Corteza + parte superior rígida del manto (70 km océanos · 200 km continentes).</li>
+            <li><strong>Motor:</strong> Corrientes de convección del manto mueven las placas tectónicas.</li>
+            <li><strong>Superficie:</strong> ~70% océanos y ~30% continentes.</li>
+            <li><strong>Evolución:</strong> Pangea (hace 300/250 M.a.) → Laurasia y Gondwana (hace 135 M.a.) → Nuestros tiempos → +150 M.a.</li>
+          </ul>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border-l-4 border-rose-600 shadow-sm space-y-2">
+          <h3 class="font-extrabold text-base sm:text-lg text-rose-800 dark:text-rose-400">Esquema 3 · Agentes Internos vs. Externos</h3>
+          <ul class="text-xs sm:text-sm space-y-1.5 list-disc pl-5 text-slate-700 dark:text-slate-300">
+            <li><strong>Internos (construyen · orogenia):</strong> Plegamientos (rocas blandas), Fallas (rocas duras), Terremotos (hipocentro, epicentro, ondas sísmicas, tsunamis) y Volcanes (cámara magmática, chimenea, cráter, cono; activos, en reposo, extinguidos).</li>
+            <li><strong>Externos (esculpen en 3 pasos):</strong> 1. Meteorización → 2. Transporte → 3. Sedimentación. Agua (lluvia, ríos/meandros/desfiladeros, mar/cabos/golfos/playas, subterráneas/estalactitas/estalagmitas), hielo (glaciares), viento (dunas), vegetación y ser humano (más rápido y radical).</li>
+          </ul>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border-l-4 border-sky-600 shadow-sm space-y-2">
+          <h3 class="font-extrabold text-base sm:text-lg text-sky-800 dark:text-sky-400">Esquema 4 · Formas del Relieve</h3>
+          <ul class="text-xs sm:text-sm space-y-1.5 list-disc pl-5 text-slate-700 dark:text-slate-300">
+            <li><strong>Continental:</strong> Montaña/cordillera, altiplano/meseta, llanura, valle fluvial (V) / glaciar (U), depresión/cuenca (fosa tectónica).</li>
+            <li><strong>Costero:</strong> Cabo, golfo/bahía, península/istmo, isla/archipiélago, ría (río) / fiorde (glaciar).</li>
+            <li><strong>Submarino:</strong> Plataforma continental (hasta 400 m), talud continental, llanura abisal (3.000-7.000 m), dorsal oceánica y fosa marina (6.000-11.000 m).</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Flashcards interactivas -->
+      <div class="space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+          <div>
+            <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">🃏 Flashcards Interactivas de Repaso</h3>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">Toca cualquier tarjeta para ver la respuesta y marca si ya la dominas.</p>
+          </div>
+          <div class="text-xs font-extrabold px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200">
+            Dominadas: <span id="repaso-dominadas-count">0 / 12</span>
+          </div>
+        </div>
+
+        <div id="flashcards-repaso-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- APARTADO 3: SIMULACRO DE EXAMEN (FEEDBACK INMEDIATO)                  -->
+    <!-- ===================================================================== -->
+    <section id="vista-simulacro" class="apartado-vista vista-activa hidden space-y-6">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">
+            🎯 Simulacro de examen · Práctica Interactiva
+          </h2>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+            Tipo test, verdadero/falso y completar conceptos con corrección inmediata y explicación al instante.
+          </p>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="px-4 py-2 rounded-xl bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 text-center">
+            <div class="text-[11px] font-bold uppercase text-blue-700 dark:text-blue-300">Puntuación</div>
+            <div id="simulacro-puntos" class="text-lg font-black text-blue-900 dark:text-blue-200">0 / 10</div>
+          </div>
+          <button type="button" onclick="reiniciarSimulacro()"
+            class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-extrabold transition">
+            Reiniciar
+          </button>
+        </div>
+      </div>
+
+      <div id="simulacro-preguntas-lista" class="space-y-4"></div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- APARTADO 4: EXAMEN HTML (FORMAL CON TEMPORIZADOR Y NOTA SOBRE 10)      -->
+    <!-- ===================================================================== -->
+    <section id="vista-examen" class="apartado-vista vista-activa hidden space-y-6">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+            Prueba Formal · Tema 2.1 · La Geosfera · 1º ESO
+          </span>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">
+            📝 Examen HTML
+          </h2>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+            Responde a las 10 preguntas numeradas y pulsa <strong>Entregar examen</strong> para ver tu nota sobre 10 y el desglose completo.
+          </p>
+        </div>
+
+        <!-- Temporizador opcional -->
+        <div class="flex flex-wrap items-center gap-2.5 bg-slate-100 dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700">
+          <div>
+            <div class="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400">Temporizador (15 min)</div>
+            <div id="timer-display" class="text-lg font-black font-mono text-slate-900 dark:text-white">15:00</div>
+          </div>
+          <button id="timer-toggle-btn" type="button" onclick="alternarTemporizador()"
+            class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold transition">
+            Iniciar
+          </button>
+          <button type="button" onclick="resetearTemporizador()"
+            class="px-2.5 py-1.5 rounded-xl bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold border border-slate-300 dark:border-slate-600 transition">
+            Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Resultado final del Examen HTML -->
+      <div id="examen-resultado-panel" class="hidden rounded-3xl p-6 border-2 shadow-md space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h3 id="examen-resultado-titulo" class="text-2xl font-black"></h3>
+            <p id="examen-resultado-resumen" class="text-sm mt-1"></p>
+          </div>
+          <div class="px-6 py-3 rounded-2xl bg-white/90 dark:bg-slate-900/90 text-center shadow-sm">
+            <div class="text-xs font-bold uppercase text-slate-500">Calificación</div>
+            <div id="examen-nota-10" class="text-3xl sm:text-4xl font-black"></div>
+          </div>
+        </div>
+        <div id="examen-desglose-lista" class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2"></div>
+      </div>
+
+      <!-- Formulario del Examen HTML -->
+      <form id="form-examen-html" onsubmit="entregarExamenHTML(event)" class="space-y-4">
+        <div id="examen-preguntas-contenedor" class="space-y-4"></div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-3">
+          <button type="submit"
+            class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-extrabold text-base shadow-md transition">
+            📤 Entregar examen
+          </button>
+          <button type="button" onclick="reiniciarExamenHTML()"
+            class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-sm transition">
+            Limpiar respuestas
+          </button>
+        </div>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- ==================== PIE DE PÁGINA ==================== -->
+  <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-5 mt-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
+      <span><strong>Tema 2.1 · La Geosfera · 1º ESO</strong> · Biología y Geología</span>
+      <span>Archivo único listo para GitHub Pages (<code>index.html</code>)</span>
+    </div>
+  </footer>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    /* ----------------------------------------------------------------------
+       1. MODO CLARO / OSCURO Y NAVEGACIÓN POR APARTADOS INDEPENDIENTES
+    ---------------------------------------------------------------------- */
+    function toggleDarkMode() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('tema21_dark', isDark ? '1' : '0');
+      actualizarBotonTema(isDark);
+    }
+
+    function actualizarBotonTema(isDark) {
+      document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+      document.getElementById('theme-label').textContent = isDark ? 'Claro' : 'Oscuro';
+    }
+
+    if (localStorage.getItem('tema21_dark') === '1') {
+      document.documentElement.classList.add('dark');
+      actualizarBotonTema(true);
+    }
+
+    // Cambia entre vistas independientes ocultando las demás y subiendo arriba del todo
+    function abrirApartado(nombreVista) {
+      document.querySelectorAll('.apartado-vista').forEach(vista => {
+        vista.classList.add('hidden');
+      });
+
+      const objetivo = document.getElementById(`vista-${nombreVista}`);
+      if (objetivo) {
+        objetivo.classList.remove('hidden');
+      }
+
+      document.querySelectorAll('.cat-nav-btn').forEach(btn => {
+        btn.className = 'cat-nav-btn shrink-0 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700';
+      });
+
+      const activo = document.getElementById(`cat-btn-${nombreVista}`);
+      if (activo) {
+        activo.className = 'cat-nav-btn shrink-0 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition flex items-center gap-1.5 bg-blue-600 text-white shadow-sm';
+      }
+
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    /* ----------------------------------------------------------------------
+       2. ALTERNAR PÁGINAS 1 A 7 EN 'APUNTES COMPLETOS 2.1'
+    ---------------------------------------------------------------------- */
+    function seleccionarPagina(pag) {
+      document.querySelectorAll('.pagina-apunte').forEach(art => {
+        if (pag === 'todas' || art.getAttribute('data-pagina') === pag) {
+          art.classList.remove('hidden');
+        } else {
+          art.classList.add('hidden');
+        }
+      });
+
+      document.querySelectorAll('.pag-btn').forEach(btn => {
+        if (btn.getAttribute('data-pag') === pag) {
+          btn.className = 'pag-btn px-3 py-1.5 rounded-xl text-xs font-extrabold bg-blue-600 text-white shadow-sm transition';
+        } else {
+          btn.className = 'pag-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition';
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    /* ----------------------------------------------------------------------
+       3. FLASHCARDS EN 'REPASO VISUAL Y ESQUEMAS'
+    ---------------------------------------------------------------------- */
+    const tarjetasRepaso = [
+      { id: 1, frente: '¿Qué ocurre con la densidad y la temperatura al bajar en la geosfera?', dorso: 'Aumentan ambas: cuanto más profunda es una capa, mayor densidad y temperatura presenta.' },
+      { id: 2, frente: 'Rocas de la corteza continental vs. oceánica', dorso: 'Continental: granito, arcilla, pizarra. Oceánica: basalto.' },
+      { id: 3, frente: '¿De qué está formado el manto y qué es el magma?', dorso: 'Principalmente de peridotitas (~2.900 km). El magma es roca fundida en zonas del manto.' },
+      { id: 4, frente: '¿Por qué es sólido el núcleo interno a 4.500 °C?', dorso: 'Por la fuerte presión a la que están sometidos el hierro y el níquel.' },
+      { id: 5, frente: '¿Qué es la litosfera y cuál es su grosor?', dorso: 'Corteza + parte superior rígida del manto. Va de 70 km bajo océanos a 200 km en continentes.' },
+      { id: 6, frente: '¿Cómo se mueven las placas litosféricas?', dorso: 'Por las corrientes de convección del manto (materiales fluidos a distintas temperaturas).' },
+      { id: 7, frente: 'Porcentaje de océanos y continentes y supercontinente inicial', dorso: '~70% océanos y ~30% continentes. Hace 300 M.a. estaban unidos en Pangea.' },
+      { id: 8, frente: '¿Qué es la orogenia y qué son plegamientos y fallas?', dorso: 'Orogenia: formación de montañas por choque de placas. Plegamientos: rocas blandas se ondulan. Fallas: rocas duras se rompen.' },
+      { id: 9, frente: 'Hipocentro, epicentro y tsunami', dorso: 'Hipocentro: punto interior de origen. Epicentro: punto en la superficie justo encima. Si es en el mar: maremoto/tsunami.' },
+      { id: 10, frente: 'Partes y estados de un volcán', dorso: 'Partes: cámara magmática, chimenea, cráter, cono volcánico (y cono secundario). Estados: activo, en reposo o extinguido.' },
+      { id: 11, frente: '3 pasos de los agentes externos y agente más rápido', dorso: '1. Meteorización → 2. Transporte → 3. Sedimentación. Más rápido y radical: el ser humano.' },
+      { id: 12, frente: 'Valle fluvial vs. glaciar y Ría vs. fiorde', dorso: 'Valle fluvial en V; glaciar en U. Ría: mar en valle fluvial; fiorde: mar en valle glaciar.' }
+    ];
+
+    let dominadasRepaso = JSON.parse(localStorage.getItem('tema21_dominadas') || '[]');
+
+    function renderizarFlashcardsRepaso() {
+      const grid = document.getElementById('flashcards-repaso-grid');
+      const countEl = document.getElementById('repaso-dominadas-count');
+      countEl.textContent = `${dominadasRepaso.length} / ${tarjetasRepaso.length}`;
+
+      grid.innerHTML = tarjetasRepaso.map(t => {
+        const sabida = dominadasRepaso.includes(t.id);
+        return `
+          <div class="perspective-1000 h-56 cursor-pointer" onclick="this.firstElementChild.classList.toggle('rotate-y-180')">
+            <div class="relative w-full h-full transform-style-3d">
+              <div class="absolute inset-0 backface-hidden rounded-2xl p-4 bg-white dark:bg-slate-900 border-2 ${sabida ? 'border-emerald-500' : 'border-slate-200 dark:border-slate-700'} shadow-sm flex flex-col justify-between">
+                <div class="flex items-center justify-between text-xs text-slate-400">
+                  <span class="font-extrabold text-blue-600 dark:text-blue-400">#${t.id}</span>
+                  <span>Toca para girar ↻</span>
+                </div>
+                <p class="font-extrabold text-sm text-slate-900 dark:text-white text-center">${t.frente}</p>
+                <div class="flex justify-end">
+                  <button type="button" onclick="marcarDominada(${t.id}, event)"
+                    class="px-2.5 py-1 rounded-lg text-xs font-bold ${sabida ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'}">
+                    ${sabida ? '✓ Dominada' : 'Marcar'}
+                  </button>
+                </div>
+              </div>
+
+              <div class="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl p-4 bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-md flex flex-col justify-between">
+                <span class="text-[11px] font-bold uppercase opacity-80">Respuesta</span>
+                <p class="text-xs sm:text-sm font-medium text-center leading-relaxed">${t.dorso}</p>
+                <span class="text-[11px] opacity-75 text-center">Toca para volver</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function marcarDominada(id, ev) {
+      ev.stopPropagation();
+      if (dominadasRepaso.includes(id)) {
+        dominadasRepaso = dominadasRepaso.filter(x => x !== id);
+      } else {
+        dominadasRepaso.push(id);
+      }
+      localStorage.setItem('tema21_dominadas', JSON.stringify(dominadasRepaso));
+      renderizarFlashcardsRepaso();
+    }
+
+    /* ----------------------------------------------------------------------
+       4. SIMULACRO DE EXAMEN (FEEDBACK INMEDIATO)
+    ---------------------------------------------------------------------- */
+    const simulacroItems = [
+      {
+        id: 's1',
+        tipo: 'Test',
+        pregunta: '¿Qué roca abunda en la corteza oceánica?',
+        opciones: ['Granito', 'Basalto', 'Pizarra', 'Arcilla'],
+        correcta: 1,
+        explicacion: 'En los fondos oceánicos (corteza oceánica) abunda el basalto.'
+      },
+      {
+        id: 's2',
+        tipo: 'Verdadero / Falso',
+        pregunta: 'El hipocentro es el punto de la superficie terrestre situado justo encima de donde se origina el terremoto.',
+        opciones: ['Verdadero', 'Falso'],
+        correcta: 1,
+        explicacion: 'Falso: el hipocentro está en el interior donde se origina el terremoto; el punto de la superficie encima es el epicentro.'
+      },
+      {
+        id: 's3',
+        tipo: 'Test',
+        pregunta: '¿Cómo se llama el proceso de formación de montañas al chocar las placas durante millones de años?',
+        opciones: ['Meteorización', 'Sedimentación', 'Orogenia', 'Erosión'],
+        correcta: 2,
+        explicacion: 'La formación de montañas por la presión mantenida del choque de placas se llama orogenia.'
+      },
+      {
+        id: 's4',
+        tipo: 'Completar concepto',
+        pregunta: 'La penetración marina alargada que ocupa el último tramo de un valle fluvial se llama ______.',
+        opciones: ['Fiorde', 'Ría', 'Istmo', 'Talud'],
+        correcta: 1,
+        explicacion: 'Una ría es una lengua de mar en el último tramo de un valle fluvial (si ocupa un valle glaciar es un fiorde).'
+      },
+      {
+        id: 's5',
+        tipo: 'Verdadero / Falso',
+        pregunta: 'Los agentes externos actúan mediante meteorización, transporte y sedimentación.',
+        opciones: ['Verdadero', 'Falso'],
+        correcta: 0,
+        explicacion: 'Verdadero: el proceso de transformación del relieve por agentes externos ocurre en esos tres pasos.'
+      },
+      {
+        id: 's6',
+        tipo: 'Test',
+        pregunta: '¿Qué agente externo modifica el relieve de forma más rápida y radical?',
+        opciones: ['El viento', 'La lluvia', 'El ser humano', 'Los glaciares'],
+        correcta: 2,
+        explicacion: 'El ser humano transforma el relieve más rápido y radicalmente con la tecnología (ciudades, minas, autopistas, canteras).'
+      },
+      {
+        id: 's7',
+        tipo: 'Completar concepto',
+        pregunta: 'La zona marítima que desciende suavemente desde la costa hasta los 400 m es la ______.',
+        opciones: ['Llanura abisal', 'Fosa marina', 'Plataforma continental', 'Dorsal oceánica'],
+        correcta: 2,
+        explicacion: 'La plataforma continental es la continuación submarina de los continentes hasta unos 400 m de profundidad.'
+      },
+      {
+        id: 's8',
+        tipo: 'Verdadero / Falso',
+        pregunta: 'Las rocas duras como el granito se doblan fácilmente formando pliegues.',
+        opciones: ['Verdadero', 'Falso'],
+        correcta: 1,
+        explicacion: 'Falso: las rocas duras y rígidas como el granito se rompen formando fallas; las blandas como la arcilla o caliza forman pliegues.'
+      },
+      {
+        id: 's9',
+        tipo: 'Test',
+        pregunta: '¿Qué dos continentes se formaron al dividirse Pangea hace unos 135 millones de años?',
+        opciones: ['América y África', 'Laurasia y Gondwana', 'Europa y Oceanía', 'Antártida y Asia'],
+        correcta: 1,
+        explicacion: 'Pangea se fragmentó dando lugar a Laurasia al norte y Gondwana al sur.'
+      },
+      {
+        id: 's10',
+        tipo: 'Completar concepto',
+        pregunta: 'Las formaciones de las cuevas por disolución de rocas con aguas subterráneas se llaman ______ y estalagmitas.',
+        opciones: ['Dunas', 'Meandros', 'Estalactitas', 'Dorsales'],
+        correcta: 2,
+        explicacion: 'Las aguas subterráneas disuelven rocas y originan galerías con estalactitas y estalagmitas.'
+      }
+    ];
+
+    let simulacroRespondidas = {};
+
+    function renderizarSimulacro() {
+      const lista = document.getElementById('simulacro-preguntas-lista');
+      const aciertos = Object.values(simulacroRespondidas).filter(v => v === true).length;
+      document.getElementById('simulacro-puntos').textContent = `${aciertos} / ${simulacroItems.length}`;
+
+      lista.innerHTML = simulacroItems.map((item, idx) => {
+        const estado = simulacroRespondidas[item.id];
+        return `
+          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-xs font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300">
+                ${idx + 1} · ${item.tipo}
+              </span>
+              ${estado === true ? '<span class="text-xs font-extrabold text-emerald-600">✓ Acertada</span>' : estado === false ? '<span class="text-xs font-extrabold text-rose-600">✕ Fallada</span>' : ''}
+            </div>
+            <p class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">${item.pregunta}</p>
+            <div class="flex flex-wrap gap-2">
+              ${item.opciones.map((op, opIdx) => `
+                <button type="button" onclick="responderSimulacro('${item.id}', ${opIdx})"
+                  class="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-blue-50 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold transition">
+                  ${op}
+                </button>
+              `).join('')}
+            </div>
+            <div id="sim-fb-${item.id}" class="${estado !== undefined ? '' : 'hidden'} p-3 rounded-xl text-xs sm:text-sm ${estado === true ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200' : estado === false ? 'bg-rose-50 text-rose-900 dark:bg-rose-950/40 dark:text-rose-200' : ''}">
+              ${estado !== undefined ? `<strong>${estado ? '¡Correcto!' : 'Revisa este concepto:'}</strong> ${item.explicacion}` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function responderSimulacro(id, opIdx) {
+      const item = simulacroItems.find(x => x.id === id);
+      if (!item) return;
+      simulacroRespondidas[id] = (opIdx === item.correcta);
+      renderizarSimulacro();
+    }
+
+    function reiniciarSimulacro() {
+      simulacroRespondidas = {};
+      renderizarSimulacro();
+    }
+
+    /* ----------------------------------------------------------------------
+       5. EXAMEN HTML (FORMAL CON TEMPORIZADOR Y NOTA SOBRE 10)
+    ---------------------------------------------------------------------- */
+    const preguntasExamenHTML = [
+      {
+        num: 1,
+        texto: 'En la geosfera, a medida que aumenta la profundidad:',
+        opciones: ['Disminuye la densidad y aumenta la temperatura', 'Aumentan la densidad y la temperatura', 'Aumenta la densidad y disminuye la temperatura', 'No varían ni densidad ni temperatura'],
+        correcta: 1,
+        correccion: 'Cuanto más profunda es una capa de la geosfera, mayor densidad y temperatura presenta.'
+      },
+      {
+        num: 2,
+        texto: '¿Qué capas forman la litosfera y cuál es su grosor aproximado?',
+        opciones: ['Corteza y parte superior rígida del manto (70 km bajo océanos a 200 km en continentes)', 'Solo la corteza continental (6 km)', 'Manto inferior y núcleo externo (2.900 km)', 'Corteza y núcleo interno (6.371 km)'],
+        correcta: 0,
+        correccion: 'La litosfera es la corteza terrestre y la parte superior rígida del manto, de 70 km bajo océanos hasta 200 km en continentes.'
+      },
+      {
+        num: 3,
+        texto: '¿Por qué el núcleo interno está sólido a pesar de estar a 4.500 °C?',
+        opciones: ['Porque no contiene hierro ni níquel', 'Por la fuerte presión a la que está sometido', 'Porque se enfría desde el manto inferior', 'Porque está formado por peridotitas'],
+        correcta: 1,
+        correccion: 'A pesar de las altas temperaturas, los materiales del núcleo interno son sólidos debido a la fuerte presión.'
+      },
+      {
+        num: 4,
+        texto: '¿Qué porcentaje aproximado de la superficie terrestre ocupan los océanos y los continentes?',
+        opciones: ['30% océanos y 70% continentes', '70% océanos y 30% continentes', '60% océanos y 40% continentes', '80% océanos y 20% continentes'],
+        correcta: 1,
+        correccion: 'Los océanos ocupan el 70% aprox. de la superficie y los continentes representan el 30%.'
+      },
+      {
+        num: 5,
+        texto: '¿Qué fenómeno se produce cuando las fuerzas tectónicas empujan rocas blandas (como arcilla o caliza)?',
+        opciones: ['Fallas', 'Plegamientos', 'Tsunamis', 'Taludes continentales'],
+        correcta: 1,
+        correccion: 'Las rocas blandas y elásticas se ondulan formando plegamientos; las duras y rígidas se rompen en fallas.'
+      },
+      {
+        num: 6,
+        texto: 'Si el epicentro de un terremoto está en el fondo del mar, se produce:',
+        opciones: ['Un plegamiento', 'Una duna', 'Un maremoto que puede generar tsunamis', 'Una meseta'],
+        correcta: 2,
+        correccion: 'Si el epicentro está en el fondo marino se origina un maremoto, capaz de producir olas gigantescas llamadas tsunamis.'
+      },
+      {
+        num: 7,
+        texto: 'En un volcán, el magma sube por la ______ y sale por el ______.',
+        opciones: ['Chimenea · cráter', 'Cámara · talud', 'Falla · meandro', 'Dorsal · istmo'],
+        correcta: 0,
+        correccion: 'El magma asciende por un tubo llamado chimenea y sale al exterior por el cráter.'
+      },
+      {
+        num: 8,
+        texto: '¿En qué orden actúan los procesos de erosión externa?',
+        opciones: ['Sedimentación → Transporte → Meteorización', 'Meteorización → Transporte → Sedimentación', 'Transporte → Meteorización → Sedimentación', 'Meteorización → Sedimentación → Transporte'],
+        correcta: 1,
+        correccion: 'Primero meteorización (romper/desmenuzar), luego transporte y finalmente sedimentación (acumular en zonas bajas).'
+      },
+      {
+        num: 9,
+        texto: '¿Qué diferencia hay entre un valle fluvial y un valle glaciar?',
+        opciones: ['El fluvial tiene forma de V y el glaciar fondo redondeado en U', 'El fluvial tiene forma de U y el glaciar en V', 'Ambos están en el fondo del mar', 'No hay diferencia'],
+        correcta: 0,
+        correccion: 'El valle fluvial tiene forma de V (creado por un río) y el valle glaciar tiene fondo redondeado en U (abierto por un glaciar).'
+      },
+      {
+        num: 10,
+        texto: '¿Cómo se llama el sector estrecho que une una península con el resto del territorio?',
+        opciones: ['Archipiélago', 'Istmo', 'Bahía', 'Fosa marina'],
+        correcta: 1,
+        correccion: 'Una península está unida al resto del territorio por un sector estrecho llamado istmo.'
+      }
+    ];
+
+    function renderizarExamenHTML() {
+      const cont = document.getElementById('examen-preguntas-contenedor');
+      cont.innerHTML = preguntasExamenHTML.map(p => `
+        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2.5">
+          <div class="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white">
+            <span class="text-indigo-600 dark:text-indigo-400 mr-1.5">Pregunta ${p.num}.</span> ${p.texto}
+          </div>
+          <div class="space-y-1.5">
+            ${p.opciones.map((op, idx) => `
+              <label class="flex items-center gap-3 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer text-sm">
+                <input type="radio" name="ex_p${p.num}" value="${idx}" class="accent-indigo-600" />
+                <span>${op}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function entregarExamenHTML(ev) {
+      ev.preventDefault();
+      let aciertos = 0;
+      const desglose = [];
+
+      preguntasExamenHTML.forEach(p => {
+        const marcada = document.querySelector(`input[name="ex_p${p.num}"]:checked`);
+        const esCorrecta = marcada && Number(marcada.value) === p.correcta;
+        if (esCorrecta) aciertos++;
+
+        desglose.push(`
+          <div class="p-3.5 rounded-xl bg-white/85 dark:bg-slate-900/85 border ${esCorrecta ? 'border-emerald-400' : 'border-rose-400'} text-xs sm:text-sm">
+            <div class="font-extrabold ${esCorrecta ? 'text-emerald-700 dark:text-emerald-300' : 'text-rose-700 dark:text-rose-300'}">
+              ${esCorrecta ? '✓' : '✕'} Pregunta ${p.num}: ${esCorrecta ? 'Acierto' : 'Fallo'}
+            </div>
+            <p class="text-slate-700 dark:text-slate-300 mt-1">${p.correccion}</p>
+          </div>
+        `);
+      });
+
+      const nota = ((aciertos / preguntasExamenHTML.length) * 10).toFixed(1);
+      const panel = document.getElementById('examen-resultado-panel');
+      panel.classList.remove('hidden');
+
+      document.getElementById('examen-nota-10').textContent = `${nota} / 10`;
+      document.getElementById('examen-desglose-lista').innerHTML = desglose.join('');
+
+      if (Number(nota) >= 5) {
+        panel.className = 'rounded-3xl p-6 border-2 border-emerald-500 bg-emerald-50 dark:bg-emerald-950/35 text-emerald-950 dark:text-emerald-100 shadow-md space-y-4';
+        document.getElementById('examen-resultado-titulo').textContent = '¡Examen aprobado! Buen trabajo';
+      } else {
+        panel.className = 'rounded-3xl p-6 border-2 border-rose-500 bg-rose-50 dark:bg-rose-950/35 text-rose-950 dark:text-rose-100 shadow-md space-y-4';
+        document.getElementById('examen-resultado-titulo').textContent = 'Examen por debajo del 5 · Revisa el desglose';
+      }
+
+      document.getElementById('examen-resultado-resumen').textContent =
+        `Has acertado ${aciertos} de ${preguntasExamenHTML.length} preguntas.`;
+
+      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function reiniciarExamenHTML() {
+      document.getElementById('form-examen-html').reset();
+      document.getElementById('examen-resultado-panel').classList.add('hidden');
+    }
+
+    // Temporizador de 15 minutos para Examen HTML
+    let segundosRestantes = 15 * 60;
+    let intervaloTimer = null;
+
+    function formatearTiempo(seg) {
+      const m = String(Math.floor(seg / 60)).padStart(2, '0');
+      const s = String(seg % 60).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function alternarTemporizador() {
+      const btn = document.getElementById('timer-toggle-btn');
+      if (intervaloTimer) {
+        clearInterval(intervaloTimer);
+        intervaloTimer = null;
+        btn.textContent = 'Reanudar';
+      } else {
+        btn.textContent = 'Pausar';
+        intervaloTimer = setInterval(() => {
+          if (segundosRestantes > 0) {
+            segundosRestantes--;
+            document.getElementById('timer-display').textContent = formatearTiempo(segundosRestantes);
+          } else {
+            clearInterval(intervaloTimer);
+            intervaloTimer = null;
+            btn.textContent = 'Terminado';
+          }
+        }, 1000);
+      }
+    }
+
+    function resetearTemporizador() {
+      clearInterval(intervaloTimer);
+      intervaloTimer = null;
+      segundosRestantes = 15 * 60;
+      document.getElementById('timer-display').textContent = formatearTiempo(segundosRestantes);
+      document.getElementById('timer-toggle-btn').textContent = 'Iniciar';
+    }
+
+    /* ----------------------------------------------------------------------
+       6. ARRANQUE INICIAL
+    ---------------------------------------------------------------------- */
+    window.addEventListener('DOMContentLoaded', () => {
+      renderizarFlashcardsRepaso();
+      renderizarSimulacro();
+      renderizarExamenHTML();
+    });
+  </script>
+</body>
+</html>
